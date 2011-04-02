@@ -6,20 +6,20 @@
 class API_cache {
     
   private 
-  		$_update_interval // how often to update
-  	, $_cache_file // file to save results to
-		,	$_api_call; // API call (URL with params)
-  
+      $_update_interval // how often to update
+    , $_cache_file // file to save results to
+    ,	$_api_call; // API call (URL with params)
+ 
   public function __construct ($tw, $int=10, $cf='api_cache.json') {
   	$this->_api_call = $tw;
   	$this->_update_interval = $int * 60; // minutes to seconds
-		$this->_cache_file = $cf;
+    $this->_cache_file = $cf;
   }
-  
-	/*
-	 * Updates cache if last modified is greater than
-	 * update interval and returns cache contents
-	 */
+ 
+  /*
+   * Updates cache if last modified is greater than
+   * update interval and returns cache contents
+   */
   public function get_api_cache () {
 		if (!file_exists($this->_cache_file) || 
 				time() - filemtime($this->_cache_file) > $this->_update_interval) {
