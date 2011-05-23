@@ -8,7 +8,7 @@
 
   $api_cache = new API_cache ($api_call, $cache_for, $cache_file);
   if (!$res = $api_cache->get_api_cache())
-    $res = "{error: 'Could not load cache'}";
+    $res = '{"error": "Could not load cache"}';
 
   ob_start();
   echo $res;
