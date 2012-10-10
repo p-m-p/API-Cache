@@ -44,16 +44,23 @@ class API_cache {
    * Makes the api call and updates the cache 
    */
   private function _update_cache () {
-    // update from api if past interval time
-    $fp = fopen($this->_cache_file, 'w+'); // open or create cache
+    $fp = fopen($this->_cache_file, 'a+'); // open or create cache
     if ($fp) {
       if (flock($fp, LOCK_EX)) {
-        $tweets = file_get_contents ($this->_api_call);
-        fwrite($fp, $tweets);
+        //Attempt to get new API data
+        $apiData = @file_get_contents ($this->_api_call);
+        //Update cache if API call was successful
+        if($apiData !== FALSE) {
+          //Clear cache
+          fseek($fp, 0);
+          ftruncate($fphandle, filesize($this->_cache_file));
+          //Update cache
+          fwrite($fp, $apiData);
+        }
         flock($fp, LOCK_UN);
       }
-      fclose($fp);
+    fclose($fp);
     }
   }
-  
 }
+?>
