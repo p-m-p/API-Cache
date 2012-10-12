@@ -1,10 +1,10 @@
 <?php
 /*
-* Caches API calls to a local file which is updated on a 
-* given time interval.
-*/
+ * Caches API calls to a local file which is updated on a 
+ * given time interval.
+ */
 class API_cache {
-  
+
   private 
       $_update_interval // how often to update
     , $_cache_file // file to save results to
@@ -44,23 +44,20 @@ class API_cache {
    * Makes the api call and updates the cache 
    */
   private function _update_cache () {
-    $fp = fopen($this->_cache_file, 'a+'); // open or create cache
+    $fp = fopen($this->_cache_file, 'a+');
+
     if ($fp) {
       if (flock($fp, LOCK_EX)) {
-        //Attempt to get new API data
-        $apiData = @file_get_contents ($this->_api_call);
-        //Update cache if API call was successful
-        if($apiData !== FALSE) {
-          //Clear cache
+        $apiData = file_get_contents($this->_api_call);
+
+        if ($apiData !== FALSE) {
           fseek($fp, 0);
-          ftruncate($fphandle, filesize($this->_cache_file));
-          //Update cache
+          ftruncate($fp, 0);
           fwrite($fp, $apiData);
         }
         flock($fp, LOCK_UN);
       }
-    fclose($fp);
+      fclose($fp);
     }
   }
 }
-?>
